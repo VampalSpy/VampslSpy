@@ -1,0 +1,152 @@
+from datetime import date
+
+DIGITS = {
+    '0': [
+        " *** ",
+        "*   *",
+        "*   *",
+        "*   *",
+        "*   *",
+        "*   *",
+        " *** "
+    ],
+    '1': [
+        "  *  ",
+        " **  ",
+        "  *  ",
+        "  *  ",
+        "  *  ",
+        "  *  ",
+        "*****"
+    ],
+    '2': [
+        " *** ",
+        "*   *",
+        "    *",
+        "   * ",
+        "  *  ",
+        " *   ",
+        "***** "
+    ],
+    '3': [
+        " *** ",
+        "*   *",
+        "    *",
+        "  ** ",
+        "    *",
+        "*   *",
+        " *** "
+    ],
+    '4': [
+        "*   *",
+        "*   *",
+        "*   *",
+        "*****",
+        "    *",
+        "    *",
+        "    *"
+    ],
+    '5': [
+        "*****",
+        "*    ",
+        "*    ",
+        " *** ",
+        "    *",
+        "*   *",
+        " *** "
+    ],
+    '6': [
+        " *** ",
+        "*    ",
+        "*    ",
+        " *** ",
+        "*   *",
+        "*   *",
+        " *** "
+    ],
+    '7': [
+        "*****",
+        "    *",
+        "   * ",
+        "  *  ",
+        " *   ",
+        " *   ",
+        " *   "
+    ],
+    '8': [
+        " *** ",
+        "*   *",
+        "*   *",
+        " *** ",
+        "*   *",
+        "*   *",
+        " *** "
+    ],
+    '9': [
+        " *** ",
+        "*   *",
+        "*   *",
+        " ****",
+        "    *",
+        "*   *",
+        " *** "
+    ]
+}
+
+weekdays_ru = {
+    0: "понедельник",
+    1: "вторник",
+    2: "среда",
+    3: "четверг",
+    4: "пятница",
+    5: "суббота",
+    6: "воскресенье"
+}
+
+def get_birth_date():
+    try:
+        day = int(input("Введите день рождения (число): "))
+        month = int(input("Введите месяц рождения (число, 1–12): "))
+        year = int(input("Введите год рождения (например, 2004): "))
+
+        birth_date = date(year, month, day)
+        return birth_date
+    except ValueError as e:
+        print("Ошибка: введённая дата некорректна. Проверьте числа и формат.")
+        print(f"Детали ошибки: {e}")
+        return None
+
+def draw_date(day, month, year):
+    # Форматируем в дд мм гггг с ведущими нулями
+    day_str = f"{day:02d}"
+    month_str = f"{month:02d}"
+    year_str = str(year)
+
+    # Собираем строку цифр: д д м м г г г г
+    digits_sequence = day_str + month_str + year_str
+
+    # Рисуем по строкам: для каждой из 7 строк собираем все цифры по горизонтали
+    for row in range(7):
+        line = ""
+        for digit_char in digits_sequence:
+            line += DIGITS[digit_char][row] + " "  # пробел между цифрами
+        print(line)
+
+birth_date = get_birth_date()
+
+if birth_date:
+    print(f"\nДата рождения: {birth_date}")
+
+    # День недели на русском
+    weekday_index = birth_date.weekday()
+    weekday_name_ru = weekdays_ru[weekday_index]
+    print(f"День недели: {weekday_name_ru}")
+
+    # Проверка на високосный год
+    if (birth_date.year % 4 == 0 and birth_date.year % 100 != 0) or (birth_date.year % 400 == 0):
+        print(f"Год {birth_date.year} — високосный.")
+    else:
+        print(f"Год {birth_date.year} — не високосный.")
+
+    print()
+    draw_date(birth_date.day, birth_date.month, birth_date.year)
